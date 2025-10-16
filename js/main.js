@@ -105,6 +105,23 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                 );
             });
+
+            // Special trigger for the last section
+            ScrollTrigger.create({
+                trigger: ".bento-grid-container",
+                containerAnimation: tween,
+                start: "right right",
+                onEnter: () => {
+                    document.querySelectorAll('.sections-nav a').forEach(a => a.classList.remove('active'));
+                    const lastLink = document.querySelector('.sections-nav a:last-child');
+                    if(lastLink) lastLink.classList.add('active');
+                },
+                onEnterBack: () => {
+                    document.querySelectorAll('.sections-nav a').forEach(a => a.classList.remove('active'));
+                    const secondLastLink = document.querySelector('.sections-nav a:nth-last-child(2)');
+                    if(secondLastLink) secondLastLink.classList.add('active');
+                }
+            });
         },
         "(max-width: 768px)": function() {
             // Smooth scroll for nav links (mobile)
