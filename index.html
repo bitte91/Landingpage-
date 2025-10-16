@@ -7,18 +7,25 @@
   <meta name="description" content="Especialista em Gestão e RH com liderança em Transformação Digital e Otimização de Processos com IA. Portfolio/landing page interativa." />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400&family=Poppins:wght@600&display=swap" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
       theme: {
         extend: {
           colors: {
-            brand: {50:'#eef7ff',100:'#d9ecff',200:'#b9daff',300:'#8ec2ff',400:'#5ea4ff',500:'#2f86ff',600:'#1f6ae6',700:'#1956b4',800:'#15478f',900:'#123c76'},
-            ink:'#0b1220'
+            primary: '#0A2342',
+            secondary: '#1E3A8A',
+            accent: '#D72638',
+            light: '#F4F4F2',
+            dark: '#1C1C1C'
+          },
+          fontFamily: {
+            sans: ['Open Sans', 'sans-serif'],
+            display: ['Poppins', 'sans-serif'],
           },
           boxShadow:{soft:'0 10px 30px rgba(17,24,39,.15)'},
-          borderRadius:{'3xl':'22px'}
+          borderRadius:{'3xl':'12px'}
         }
       }
     }
@@ -29,9 +36,13 @@
   <script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.38/bundled/lenis.min.js"></script>
   <script src="https://unpkg.com/lucide@0.454.0/dist/umd/lucide.js"></script>
   <style>
-    :root{--radius:22px}
-    html,body{height:100%; background:#0b1220; color:#e5e7eb}
-    body{font-family:Inter,system-ui,Segoe UI,Roboto,Helvetica,Arial}
+    :root{--radius:12px}
+    html,body{height:100%; background-color: #F4F4F2; color: #1C1C1C;}
+    body{font-family: 'Open Sans', sans-serif; line-height: 1.6em;}
+    h1, h2, h3, h4, h5, h6 { font-family: 'Poppins', sans-serif; font-weight: 600; color: #0A2342; }
+    .btn { border-radius: 999px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); transition: all 0.3s ease; }
+    .btn:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(0,0,0,0.12); }
+    .glass{background:rgba(255,255,255,0.2); backdrop-filter: blur(25px); border:1px solid rgba(255,255,255,0.3); border-radius:var(--radius)}
     /* Entrada suave sem splash */
     .page-fade{opacity:0; transform:translateY(8px);}
     .page-fade.show{opacity:1; transform:none; transition:opacity .6s ease, transform .6s ease;}
@@ -44,7 +55,7 @@
     .badge{border:1px solid rgba(255,255,255,.12); border-radius:999px; padding:.35rem .7rem; font-size:.78rem}
     .shadow-ring{box-shadow:0 0 0 1px rgba(255,255,255,.08), 0 10px 25px rgba(2,6,23,.45)}
     .reveal{opacity:0; transform: translateY(26px);}
-    .hero-gradient{background:radial-gradient(1200px 600px at 70% -10%,rgba(47,134,255,.25),transparent),radial-gradient(1000px 400px at 20% 10%,rgba(94,164,255,.18),transparent)}
+    .hero-gradient{background:radial-gradient(1200px 600px at 70% -10%,rgba(10,35,66,.25),transparent),radial-gradient(1000px 400px at 20% 10%,rgba(30,58,138,.18),transparent)}
     .tilt:hover{transform:perspective(900px) rotateX(3deg) rotateY(-3deg); transition: transform .35s ease}
     .dot{position:absolute; border-radius:999px; opacity:.5; filter:blur(18px)}
     .dot.one{width:280px; height:280px; background:rgba(47,134,255,.25); top:-60px; right:-60px}
@@ -62,7 +73,7 @@
   <header class="fixed top-0 left-0 right-0 z-40">
     <div class="mx-auto max-w-7xl px-4">
       <nav class="glass mt-4 flex items-center justify-between px-4 py-3 shadow-ring">
-        <a href="#home" class="font-extrabold tracking-tight text-lg">Fabiano <span class="text-brand-400">Bitencourt</span></a>
+        <a href="#home" class="font-display font-extrabold tracking-tight text-lg text-primary">Fabiano <span class="text-secondary">Bitencourt</span></a>
         <ul class="hidden md:flex gap-6 text-sm">
           <li><a class="nav-link" data-nav href="#sobre">Sobre</a></li>
           <li><a class="nav-link" data-nav href="#expertise">Expertise</a></li>
@@ -82,15 +93,15 @@
       <div class="grid lg:grid-cols-2 gap-8 items-center">
         <div class="reveal">
           <div class="inline-flex items-center gap-2 badge mb-4">
-            <span class="w-2 h-2 rounded-full bg-brand-400 animate-pulse"></span>
+            <span class="w-2 h-2 rounded-full bg-accent animate-pulse"></span>
             Disponível para início imediato e viagens
           </div>
-          <h1 class="text-4xl md:text-5xl font-extrabold leading-tight">Gestão, RH & <span class="text-brand-400">Inteligência Artificial</span></h1>
-          <p class="mt-4 text-slate-300 max-w-xl">Profissional com 7+ anos de experiência em administração e recursos humanos, liderança em transformação digital e otimização de processos com IA.</p>
+          <h1 class="text-4xl md:text-5xl font-display font-extrabold leading-tight text-primary">Gestão, RH & <span class="text-secondary">Inteligência Artificial</span></h1>
+          <p class="mt-4 text-dark max-w-xl">Profissional com 7+ anos de experiência em administração e recursos humanos, liderança em transformação digital e otimização de processos com IA.</p>
           <div class="mt-6 flex flex-wrap gap-3">
-            <a href="#projetos" class="badge hover:bg-brand-500/10">Ver projetos</a>
-            <a href="#expertise" class="badge hover:bg-brand-500/10">Competências</a>
-            <a href="#contato" class="badge hover:bg-brand-500/10">Vamos conversar</a>
+            <a href="#projetos" class="badge btn hover:bg-secondary/10">Ver projetos</a>
+            <a href="#expertise" class="badge btn hover:bg-secondary/10">Competências</a>
+            <a href="#contato" class="badge btn hover:bg-secondary/10">Vamos conversar</a>
           </div>
           <div class="mt-6 text-sm text-slate-400">Taubaté/SP • (12) 99766-5132 • bitt.rh.tte@gmail.com</div>
 
@@ -146,8 +157,8 @@
       <h2 class="text-2xl font-bold mb-6">Áreas de Expertise</h2>
       <div class="grid md:grid-cols-3 gap-6">
         <article class="glass p-6 shadow-ring reveal">
-          <h3 class="font-semibold text-brand-300 mb-2">Gestão & Pessoas</h3>
-          <ul class="space-y-2 text-slate-300 list-disc list-inside">
+          <h3 class="font-semibold text-secondary mb-2">Gestão & Pessoas</h3>
+          <ul class="space-y-2 text-dark list-disc list-inside">
             <li>Gestão estratégica de pessoas e cultura</li>
             <li>Recrutamento e seleção end-to-end</li>
             <li>Avaliação de desempenho e feedback</li>
@@ -155,8 +166,8 @@
           </ul>
         </article>
         <article class="glass p-6 shadow-ring reveal">
-          <h3 class="font-semibold text-brand-300 mb-2">Tecnologia & IA</h3>
-          <ul class="space-y-2 text-slate-300 list-disc list-inside">
+          <h3 class="font-semibold text-secondary mb-2">Tecnologia & IA</h3>
+          <ul class="space-y-2 text-dark list-disc list-inside">
             <li>Automação de processos (RPA/low-code)</li>
             <li>Dashboards e sistemas de controle interno</li>
             <li>Aplicação prática de IA generativa</li>
@@ -164,8 +175,8 @@
           </ul>
         </article>
         <article class="glass p-6 shadow-ring reveal">
-          <h3 class="font-semibold text-brand-300 mb-2">Liderança & Execução</h3>
-          <ul class="space-y-2 text-slate-300 list-disc list-inside">
+          <h3 class="font-semibold text-secondary mb-2">Liderança & Execução</h3>
+          <ul class="space-y-2 text-dark list-disc list-inside">
             <li>Visão estratégica e execução</li>
             <li>Gestão de equipes e operações</li>
             <li>Comunicação e oratória</li>
@@ -206,7 +217,7 @@
 
     <!-- IA SECTION -->
     <section id="ia" class="relative mx-auto max-w-7xl px-4 py-14">
-      <div class="absolute inset-0 rounded-3xl bg-gradient-to-br from-brand-900/40 via-brand-700/20 to-transparent pointer-events-none"></div>
+      <div class="absolute inset-0 rounded-3xl bg-gradient-to-br from-primary via-secondary to-accent pointer-events-none opacity-20"></div>
       <div class="particles" id="particles"></div>
       <div class="relative glass p-6 shadow-ring">
         <div class="flex items-center gap-2 mb-3"><i data-lucide="brain"></i><h2 class="text-2xl font-bold">Projetos de Inteligência Artificial</h2></div>
@@ -253,7 +264,7 @@
             <input id="empresa" placeholder="Empresa (opcional)" class="glass p-3 rounded-xl outline-none" />
             <input id="email" type="email" placeholder="E-mail" class="glass p-3 rounded-xl outline-none md:col-span-2" />
             <textarea id="mensagem" placeholder="Mensagem" class="glass p-3 rounded-xl outline-none md:col-span-2" rows="4"></textarea>
-            <button class="bg-brand-500 hover:bg-brand-400 transition text-ink font-semibold rounded-xl px-5 py-3 md:col-span-2">Enviar pelo WhatsApp</button>
+            <button class="bg-gradient-to-r from-primary to-secondary hover:from-secondary hover:to-accent transition text-white font-semibold rounded-xl px-5 py-3 md:col-span-2 btn">Enviar pelo WhatsApp</button>
           </form>
         </div>
         <aside class="glass p-6 shadow-ring reveal">
