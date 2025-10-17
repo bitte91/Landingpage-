@@ -39,8 +39,8 @@
             <div class="metallic-gradient"></div>
         </div>
         <div class="dots-overlay"></div>
-        <div id="horizontal-scroll-container" class="horizontal-scroll-container">
-            <section class="hero-section">
+        <div id="scroll-container" class="scroll-container">
+            <section class="hero-section" data-section="Início">
                 <div class="hero-content">
                     <h1 class="hero-title">Fabiano Bitencourt</h1>
                     <h2 class="hero-subtitle">Gestão Estratégica, RH & Inovação com IA</h2>
@@ -48,75 +48,83 @@
                 </div>
             </section>
 
-            <div class="bento-grid-container">
-                <div class="bento-grid">
-                    <!-- Card 1: Proposta de Valor -->
-                    <div class="card card-1" data-section="Proposta" data-title="Proposta de Valor">
-                        <div class="card-content">
-                            <h3>Conectando Pessoas, Processos e Tecnologia</h3>
-                            <p>Liderança em projetos de modernização da gestão, transformando desafios complexos em resultados sustentáveis e impulsionando a eficiência operacional.</p>
+            <div class="content-wrapper">
+                <section id="formacao" class="content-section" data-section="Formação">
+                    <h2 class="section-title">Formação Acadêmica</h2>
+                    <div class="timeline">
+                        <div class="timeline-item-container">
+                            <div class="timeline-item card">
+                                <h4>Gestão de Recursos Humanos</h4>
+                                <p>Traz um conhecimento de gestão aprofundado, dando amplitude para lidar com a complexidade de gerir o bem mais precioso de qualquer empresa: sua equipe.</p>
+                            </div>
                         </div>
-                    </div>
-
-                    <!-- Card 2 & 3 & 4: Especialidades -->
-                    <div class="card card-2" data-section="Especialidades" data-title="RH Estratégico">
-                        <div class="card-icon"><i data-lucide="users"></i></div>
-                        <h4>RH Estratégico</h4>
-                    </div>
-                    <div class="card card-3" data-title="Gestão & Processos">
-                         <div class="card-icon"><i data-lucide="briefcase"></i></div>
-                        <h4>Gestão & Processos</h4>
-                    </div>
-                    <div class="card card-4" data-title="Liderança">
-                        <div class="card-icon"><i data-lucide="target"></i></div>
-                        <h4>Liderança</h4>
-                    </div>
-
-                    <!-- Card 5: Diferencial IA -->
-                    <div class="card card-5" data-section="Diferencial" data-title="IA & Automação">
-                        <div class="card-content full-width">
-                            <div class="card-icon-large"><i data-lucide="brain-circuit"></i></div>
-                            <h3>Diferencial: IA & Automação</h3>
-                            <p>Aplicação prática de IA generativa e automação (RPA/low-code) para otimizar fluxos de trabalho e criar dashboards preditivos para RH.</p>
+                        <div class="timeline-item-container">
+                            <div class="timeline-item card">
+                                <h4>Docência no Ensino Superior com Ênfase em Administração</h4>
+                                <p>Desenvolve a habilidade de estruturar o conhecimento e a arte de compartilhar saberes, formando novos profissionais e líderes.</p>
+                            </div>
                         </div>
-                    </div>
-
-                    <!-- Card 6: Experiência -->
-                    <div class="card card-6" data-section="Experiência" data-title="7+ Anos de Experiência">
-                        <div class="card-content">
-                            <h3>7+ Anos de Experiência</h3>
-                            <div class="timeline">
-                                <div class="timeline-item">
-                                    <div class="timeline-dot"></div>
-                                    <div class="timeline-content">
-                                        <strong>Prefeitura de Natividade da Serra</strong>
-                                        <span>Modernização da Gestão (2022-2025)</span>
-                                    </div>
-                                </div>
-                                <div class="timeline-item">
-                                    <div class="timeline-dot"></div>
-                                    <div class="timeline-content">
-                                        <strong>Prefeitura de Taubaté</strong>
-                                        <span>5+ anos em Gestão e RH</span>
-                                    </div>
-                                </div>
+                        <div class="timeline-item-container">
+                            <div class="timeline-item card">
+                                <h4>Psicologia do Trabalho</h4>
+                                <p>Oferece uma visão aprofundada sobre o comportamento organizacional, permitindo criar ambientes mais saudáveis, produtivos e motivadores.</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item-container">
+                            <div class="timeline-item card">
+                                <h4>Neuropsicanálise</h4>
+                                <p>Um diferencial que permite decifrar as camadas mais profundas das motivações humanas, essencial para a resolução de conflitos e desenvolvimento de equipes de alta performance.</p>
+                            </div>
+                        </div>
+                         <div class="timeline-item-container">
+                            <div class="timeline-item card">
+                                <h4>Gestão de Projetos</h4>
+                                <p>A ferramenta para transformar visão em realidade, capacitando a execução de ideias complexas em resultados concretos, dentro do prazo e do orçamento.</p>
                             </div>
                         </div>
                     </div>
+                </section>
 
-                    <!-- Card 7: Projetos & Palestras -->
-                    <div class="card card-7" data-section="Projetos" data-title="Projetos & Reconhecimentos">
+                <section id="jornada" class="content-section" data-section="Jornada">
+                    <h2 class="section-title">Jornada Profissional</h2>
+                    <div class="card">
                         <div class="card-content">
-                            <h3>Projetos & Reconhecimentos</h3>
+                            <h3>A Arte de Transformar Conhecimento em Ação</h3>
+                            <p>O maior desafio nunca foi adquirir conhecimento técnico, mas sim aplicá-lo com a sutileza que as relações humanas exigem. Ter informações é apenas o ponto de partida; a verdadeira maestria está em transformar esses dados em conhecimento aplicável, gerando crescimento real e sustentável.</p>
+                            <p>Os resultados que mais me trouxeram orgulho foram aqueles que transcenderam as métricas e tocaram a essência do ambiente de trabalho: projetos que não apenas modernizaram processos, mas também cultivaram um ecossistema de evolução mútua. Ver uma equipe evoluir junto com a empresa é a maior das gratificações. Executar e inovar exige muito, mas a recompensa de ver o todo florescer é ímpar.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="ia" class="content-section" data-section="IA">
+                    <h2 class="section-title">Inovação com IA</h2>
+                    <div class="card">
+                        <div class="card-content">
+                            <h3>Criando Novos Horizontes</h3>
+                            <p>A verdadeira inovação nasce da curiosidade. Através da aplicação de modelos de Inteligência Artificial, com engenharia de prompts refinada, transformamos o mundano em extraordinário. A automação de serviços burocráticos e a modernização de processos repetitivos não são apenas sobre eficiência; são sobre liberar o potencial humano para focar no que realmente importa: a estratégia, a criatividade e o crescimento.</p>
+                            <p>Idealizar inovações em cada segmento é a chave para a competitividade sustentável. A IA é a ferramenta que nos permite não apenas otimizar o presente, mas também construir os alicerces de um futuro mais inteligente e ágil.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="missao" class="content-section" data-section="Missão">
+                    <h2 class="section-title">Minha Missão & Valores</h2>
+                    <div class="card">
+                        <div class="card-content">
+                            <h3>Crescimento Contínuo e Compartilhado</h3>
+                            <p><strong>Missão:</strong> Evoluir junto com meus colegas e, sempre que possível, agregar com minha combinação única de vivência e conhecimento. Acredito que o crescimento só é real quando é compartilhado.</p>
                             <ul>
-                                <li><strong>Resultados:</strong> +400 colaboradores impactados por nova avaliação de desempenho.</li>
-                                <li><strong>Palestra:</strong> "eSocial: Impactos e Aplicações Práticas" na FATEC.</li>
+                                <li><strong>Educação e Respeito:</strong> São inegociáveis. A base de qualquer interação humana produtiva começa aqui.</li>
+                                <li><strong>Inovação no Cotidiano:</strong> Olhar sempre com novos olhos para um serviço rotineiro. Criar visões diferentes para o mesmo problema é essencial para a evolução.</li>
+                                <li><strong>Confidencialidade:</strong> Ser zeloso com as informações. Tudo que vejo no trabalho é sigiloso até que se prove o contrário.</li>
+                                <li><strong>Aprendizado Mútuo:</strong> A melhor maneira de realmente aprender algo é ajudando alguém a aprender com você.</li>
                             </ul>
                         </div>
                     </div>
+                </section>
 
-                    <!-- Card 8: Contato -->
-                    <div class="card card-8" id="contato" data-section="Contato" data-title="Contato">
+                <section id="contato" class="content-section" data-section="Contato">
+                    <div class="card">
                         <div class="card-content">
                             <h3>Vamos Conversar</h3>
                             <div class="contact-links">
@@ -126,7 +134,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </section>
             </div>
         </div>
     </main>

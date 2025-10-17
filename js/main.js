@@ -16,10 +16,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const sectionsNav = document.querySelector('.sections-nav');
     const mobileNav = document.querySelector('.mobile-nav');
-    const cardsWithSection = document.querySelectorAll('[data-section]');
+    const sections = document.querySelectorAll('[data-section]');
     const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
     const themeToggle = document.querySelector('.theme-toggle');
-    const horizontalScrollContainer = document.querySelector('.horizontal-scroll-container');
 
     // Set initial theme
     document.body.dataset.theme = 'dark';
@@ -30,133 +29,78 @@ document.addEventListener('DOMContentLoaded', () => {
         document.body.dataset.theme = currentTheme === 'dark' ? 'light' : 'dark';
     });
 
-    let sections = [];
     // Dynamically create nav links for both desktop and mobile
-    cardsWithSection.forEach((card, index) => {
-        const sectionName = card.dataset.section;
-        if (!card.id) card.id = sectionName;
-        sections.push({id: `#${card.id}`, element: card, index: index});
+    sections.forEach(section => {
+        const sectionName = section.dataset.section;
+        const sectionId = section.id;
 
-        // Desktop nav
         const link = document.createElement('a');
-        link.href = `#${card.id}`;
+        link.href = `#${sectionId}`;
         link.textContent = sectionName;
-        link.dataset.target = `#${card.id}`;
         sectionsNav.appendChild(link);
 
-        // Mobile nav
         const mobileLink = link.cloneNode(true);
         mobileNav.appendChild(mobileLink);
+
+        // Add scroll trigger for each section to update nav
+        ScrollTrigger.create({
+            trigger: section,
+            start: "top center",
+            end: "bottom center",
+            onToggle: self => {
+                const targetLink = document.querySelector(`.sections-nav a[href="#${sectionId}"]`);
+                if (self.isActive && targetLink) {
+                    document.querySelectorAll('.sections-nav a').forEach(a => a.classList.remove('active'));
+                    targetLink.classList.add('active');
+                }
+            }
+        });
     });
 
-    ScrollTrigger.matchMedia({
-        "(min-width: 769px)": function() {
-            // Horizontal scroll animation
-            let tween = gsap.to(horizontalScrollContainer, {
-                x: () => -(horizontalScrollContainer.scrollWidth - document.documentElement.clientWidth) + "px",
-                ease: "none",
+    // Smooth scroll for all nav links
+    const allLinks = document.querySelectorAll('.sections-nav a, .mobile-nav a, .hero-cta');
+    allLinks.forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            e.preventDefault();
+            const targetId = this.getAttribute('href');
+
+            if (mobileNav.style.display === 'flex') {
+                mobileNav.style.display = 'none';
+                mobileMenuToggle.classList.remove('open');
+            }
+
+            gsap.to(window, {
+                duration: 1,
+                scrollTo: targetId
+            });
+        });
+    });
+
+    // Animate cards on scroll
+    gsap.utils.toArray('.card').forEach(card => {
+        gsap.fromTo(card,
+            { opacity: 0, y: 50 },
+            {
+                opacity: 1,
+                y: 0,
+                duration: 0.8,
+                ease: 'power3.out',
                 scrollTrigger: {
-                    trigger: horizontalScrollContainer,
-                    pin: true,
-                    scrub: 1,
-                    end: () => "+=" + (horizontalScrollContainer.scrollWidth - document.documentElement.clientWidth),
-                    onUpdate: self => {
-                        const progress = self.progress;
-                        const sectionIndex = Math.floor(progress * sections.length);
-                        document.querySelectorAll('.sections-nav a').forEach(a => a.classList.remove('active'));
-                        if(sections[sectionIndex]){
-                            const activeLink = document.querySelector(`.sections-nav a[data-target="${sections[sectionIndex].id}"]`);
-                            if(activeLink) activeLink.classList.add('active');
-                        }
-                    }
+                    trigger: card,
+                    start: 'top 85%',
+                    toggleActions: 'play none none none'
                 }
-            });
+            }
+        );
+    });
 
-            // Smooth scroll for nav links (desktop)
-            document.querySelectorAll('.sections-nav a').forEach(anchor => {
-                anchor.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    const target = this.getAttribute('href');
-                    gsap.to(window, {
-                        duration: 1,
-                        scrollTo: {
-                            x: target,
-                            offsetX: (document.documentElement.clientWidth - document.querySelector(target).offsetWidth) / 2
-                        }
-                    });
-                });
-            });
-
-            // Card fade-in + slide-up animation (desktop)
-            gsap.utils.toArray('.card').forEach(card => {
-                gsap.fromTo(card,
-                    { opacity: 0, y: 50 },
-                    {
-                        opacity: 1,
-                        y: 0,
-                        duration: 0.8,
-                        ease: 'power3.out',
-                        scrollTrigger: {
-                            trigger: card,
-                            containerAnimation: tween,
-                            start: 'left 80%',
-                            toggleActions: 'play none none none'
-                        }
-                    }
-                );
-            });
-
-            // Special trigger for the last section
-            ScrollTrigger.create({
-                trigger: ".bento-grid-container",
-                containerAnimation: tween,
-                start: "right right",
-                onEnter: () => {
-                    document.querySelectorAll('.sections-nav a').forEach(a => a.classList.remove('active'));
-                    const lastLink = document.querySelector('.sections-nav a:last-child');
-                    if(lastLink) lastLink.classList.add('active');
-                },
-                onEnterBack: () => {
-                    document.querySelectorAll('.sections-nav a').forEach(a => a.classList.remove('active'));
-                    const secondLastLink = document.querySelector('.sections-nav a:nth-last-child(2)');
-                    if(secondLastLink) secondLastLink.classList.add('active');
-                }
-            });
-        },
-        "(max-width: 768px)": function() {
-            // Smooth scroll for nav links (mobile)
-            document.querySelectorAll('.mobile-nav a').forEach(anchor => {
-                anchor.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    if (mobileNav.style.display === 'flex') {
-                        mobileNav.style.display = 'none'; // Hide mobile nav on click
-                        mobileMenuToggle.classList.remove('open');
-                    }
-                    const target = this.getAttribute('href');
-                    gsap.to(window, {
-                        duration: 1,
-                        scrollTo: target
-                    });
-                });
-            });
-
-            // Card fade-in + slide-up animation (mobile)
-            gsap.utils.toArray('.card').forEach(card => {
-                gsap.fromTo(card,
-                    { opacity: 0, y: 50 },
-                    {
-                        opacity: 1,
-                        y: 0,
-                        duration: 0.8,
-                        ease: 'power3.out',
-                        scrollTrigger: {
-                            trigger: card,
-                            start: 'top 80%',
-                            toggleActions: 'play none none none'
-                        }
-                    }
-                );
-            });
+    // Add classes for timeline animation
+    const timelineItems = document.querySelectorAll('.timeline-item-container');
+    timelineItems.forEach((item, index) => {
+        if (index % 2 === 0) {
+            item.classList.add('left');
+        } else {
+            item.classList.add('right');
         }
     });
 
