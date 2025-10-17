@@ -58,31 +58,43 @@ document.addEventListener('DOMContentLoaded', () => {
                 scrollTrigger: {
                     trigger: horizontalScrollContainer,
                     pin: true,
-                    scrub: 1,
-                    end: () => "+=" + (horizontalScrollContainer.scrollWidth - document.documentElement.clientWidth),
-                    onUpdate: self => {
-                        const progress = self.progress;
-                        const sectionIndex = Math.floor(progress * sections.length);
-                        document.querySelectorAll('.sections-nav a').forEach(a => a.classList.remove('active'));
-                        if(sections[sectionIndex]){
-                            const activeLink = document.querySelector(`.sections-nav a[data-target="${sections[sectionIndex].id}"]`);
-                            if(activeLink) activeLink.classList.add('active');
-                        }
-                    }
+                    end: () => "+=" + (horizontalScrollContainer.scrollWidth - document.documentElement.clientWidth)
                 }
             });
 
+            // Active link highlighting on scroll
+            sections.forEach(section => {
+                ScrollTrigger.create({
+                    trigger: section.element,
+                    containerAnimation: tween,
+                    start: "left center",
+                    end: "right center",
+                    onToggle: self => {
+                        if (self.isActive) {
+                            document.querySelectorAll('.sections-nav a').forEach(a => a.classList.remove('active'));
+                            const activeLink = document.querySelector(`.sections-nav a[data-target="${section.id}"]`);
+                            if (activeLink) activeLink.classList.add('active');
+                        }
+                    },
+                });
+            });
+
             // Smooth scroll for nav links (desktop)
-            document.querySelectorAll('.sections-nav a').forEach(anchor => {
+            document.querySelectorAll('.sections-nav a').forEach((anchor) => {
                 anchor.addEventListener('click', function(e) {
                     e.preventDefault();
+
                     const target = this.getAttribute('href');
+                    const targetElement = document.querySelector(target);
+
+                    let scrollX = targetElement.offsetLeft - (document.documentElement.clientWidth - targetElement.offsetWidth) / 2;
+                    scrollX = Math.max(0, scrollX);
+                    scrollX = Math.min(scrollX, horizontalScrollContainer.scrollWidth - document.documentElement.clientWidth);
+
                     gsap.to(window, {
                         duration: 1,
-                        scrollTo: {
-                            x: target,
-                            offsetX: (document.documentElement.clientWidth - document.querySelector(target).offsetWidth) / 2
-                        }
+                        ease: "power2.inOut",
+                        scrollTo: { x: scrollX }
                     });
                 });
             });
@@ -105,23 +117,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                 );
             });
-
-            // Special trigger for the last section
-            ScrollTrigger.create({
-                trigger: ".bento-grid-container",
-                containerAnimation: tween,
-                start: "right right",
-                onEnter: () => {
-                    document.querySelectorAll('.sections-nav a').forEach(a => a.classList.remove('active'));
-                    const lastLink = document.querySelector('.sections-nav a:last-child');
-                    if(lastLink) lastLink.classList.add('active');
-                },
-                onEnterBack: () => {
-                    document.querySelectorAll('.sections-nav a').forEach(a => a.classList.remove('active'));
-                    const secondLastLink = document.querySelector('.sections-nav a:nth-last-child(2)');
-                    if(secondLastLink) secondLastLink.classList.add('active');
-                }
-            });
         },
         "(max-width: 768px)": function() {
             // Smooth scroll for nav links (mobile)
@@ -129,7 +124,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 anchor.addEventListener('click', function(e) {
                     e.preventDefault();
                     if (mobileNav.style.display === 'flex') {
-                        mobileNav.style.display = 'none'; // Hide mobile nav on click
+                        mobileNav.style.display = 'none';
                         mobileMenuToggle.classList.remove('open');
                     }
                     const target = this.getAttribute('href');
