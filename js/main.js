@@ -1,91 +1,164 @@
-
-window.addEventListener("load", () => {
-  if (typeof gsap === "undefined" || typeof ScrollTrigger === "undefined") {
-    console.warn("GSAP ou ScrollTrigger não foram carregados.");
-    return;
-  }
-
-  gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
-
-  // Oculta a tela de carregamento suavemente
-  const loadingScreen = document.getElementById("loading-screen");
-  if (loadingScreen) {
-    gsap.to(loadingScreen, {
-      opacity: 0,
-      duration: 0.6,
-      onComplete: () => loadingScreen.remove(),
+document.addEventListener('DOMContentLoaded', () => {
+    // Hide loading screen
+    const loadingScreen = document.getElementById('loading-screen');
+    window.addEventListener('load', () => {
+        loadingScreen.style.opacity = '0';
+        setTimeout(() => {
+            loadingScreen.style.display = 'none';
+        }, 500);
     });
-  }
 
-  // Cria uma navegação dinâmica com base nas seções existentes
-  const navContainer = document.querySelector(".sections-nav");
-  const sections = document.querySelectorAll("section");
-  if (navContainer && sections.length) {
-    sections.forEach((sec) => {
-      const link = document.createElement("a");
-      link.href = `#${sec.id}`;
-      link.textContent =
-        sec.querySelector("h2")?.textContent ||
-        (sec.id.charAt(0).toUpperCase() + sec.id.slice(1));
-      navContainer.appendChild(link);
+    // Initialize Lucide icons
+    lucide.createIcons();
+
+    // GSAP Animations & Navigation
+    gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
+
+    const sectionsNav = document.querySelector('.sections-nav');
+    const mobileNav = document.querySelector('.mobile-nav');
+    const cardsWithSection = document.querySelectorAll('[data-section]');
+    const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
+    const themeToggle = document.querySelector('.theme-toggle');
+    const horizontalScrollContainer = document.querySelector('.horizontal-scroll-container');
+
+    // Set initial theme
+    document.body.dataset.theme = 'dark';
+
+    // Theme toggle handler
+    themeToggle.addEventListener('click', () => {
+        const currentTheme = document.body.dataset.theme;
+        document.body.dataset.theme = currentTheme === 'dark' ? 'light' : 'dark';
     });
-  }
 
-  // Tema claro/escuro
-  const themeBtn = document.querySelector(".theme-toggle");
-  const root = document.documentElement;
-  if (themeBtn) {
-    themeBtn.addEventListener("click", () => {
-      document.body.classList.toggle("light-mode");
-      root.style.setProperty("--color-bg", "#F4F4F2");
-      root.style.setProperty("--color-light", "#1B1B1B");
-      root.style.setProperty("--color-card", "rgba(0, 0, 0, 0.05)");
+    let sections = [];
+    // Dynamically create nav links for both desktop and mobile
+    cardsWithSection.forEach((card, index) => {
+        const sectionName = card.dataset.section;
+        if (!card.id) card.id = sectionName;
+        sections.push({id: `#${card.id}`, element: card, index: index});
+
+        // Desktop nav
+        const link = document.createElement('a');
+        link.href = `#${card.id}`;
+        link.textContent = sectionName;
+        link.dataset.target = `#${card.id}`;
+        sectionsNav.appendChild(link);
+
+        // Mobile nav
+        const mobileLink = link.cloneNode(true);
+        mobileNav.appendChild(mobileLink);
     });
-  }
 
-  // Animações básicas de entrada das seções
-  sections.forEach((section) => {
-    gsap.from(section, {
-      opacity: 0,
-      y: 50,
-      duration: 0.8,
-      scrollTrigger: {
-        trigger: section,
-        start: "top 80%",
-        toggleActions: "play none none reverse",
-      },
+    ScrollTrigger.matchMedia({
+        "(min-width: 769px)": function() {
+            // Horizontal scroll animation
+            let tween = gsap.to(horizontalScrollContainer, {
+                x: () => -(horizontalScrollContainer.scrollWidth - document.documentElement.clientWidth) + "px",
+                ease: "none",
+                scrollTrigger: {
+                    trigger: horizontalScrollContainer,
+                    pin: true,
+                    end: () => "+=" + (horizontalScrollContainer.scrollWidth - document.documentElement.clientWidth)
+                }
+            });
+
+            // Active link highlighting on scroll
+            sections.forEach(section => {
+                ScrollTrigger.create({
+                    trigger: section.element,
+                    containerAnimation: tween,
+                    start: "left center",
+                    end: "right center",
+                    onToggle: self => {
+                        if (self.isActive) {
+                            document.querySelectorAll('.sections-nav a').forEach(a => a.classList.remove('active'));
+                            const activeLink = document.querySelector(`.sections-nav a[data-target="${section.id}"]`);
+                            if (activeLink) activeLink.classList.add('active');
+                        }
+                    },
+                });
+            });
+
+            // Smooth scroll for nav links (desktop)
+            document.querySelectorAll('.sections-nav a').forEach((anchor) => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+
+                    const target = this.getAttribute('href');
+                    const targetElement = document.querySelector(target);
+
+                    let scrollX = targetElement.offsetLeft - (document.documentElement.clientWidth - targetElement.offsetWidth) / 2;
+                    scrollX = Math.max(0, scrollX);
+                    scrollX = Math.min(scrollX, horizontalScrollContainer.scrollWidth - document.documentElement.clientWidth);
+
+                    gsap.to(window, {
+                        duration: 1,
+                        ease: "power2.inOut",
+                        scrollTo: { x: scrollX }
+                    });
+                });
+            });
+
+            // Card fade-in + slide-up animation (desktop)
+            gsap.utils.toArray('.card').forEach(card => {
+                gsap.fromTo(card,
+                    { opacity: 0, y: 50 },
+                    {
+                        opacity: 1,
+                        y: 0,
+                        duration: 0.8,
+                        ease: 'power3.out',
+                        scrollTrigger: {
+                            trigger: card,
+                            containerAnimation: tween,
+                            start: 'left 80%',
+                            toggleActions: 'play none none none'
+                        }
+                    }
+                );
+            });
+        },
+        "(max-width: 768px)": function() {
+            // Smooth scroll for nav links (mobile)
+            document.querySelectorAll('.mobile-nav a').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    if (mobileNav.style.display === 'flex') {
+                        mobileNav.style.display = 'none';
+                        mobileMenuToggle.classList.remove('open');
+                    }
+                    const target = this.getAttribute('href');
+                    gsap.to(window, {
+                        duration: 1,
+                        scrollTo: target
+                    });
+                });
+            });
+
+            // Card fade-in + slide-up animation (mobile)
+            gsap.utils.toArray('.card').forEach(card => {
+                gsap.fromTo(card,
+                    { opacity: 0, y: 50 },
+                    {
+                        opacity: 1,
+                        y: 0,
+                        duration: 0.8,
+                        ease: 'power3.out',
+                        scrollTrigger: {
+                            trigger: card,
+                            start: 'top 80%',
+                            toggleActions: 'play none none none'
+                        }
+                    }
+                );
+            });
+        }
     });
-  });
 
-  // Scroll suave ao clicar em links de navegação
-  document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
-    anchor.addEventListener("click", function (e) {
-      const targetId = this.getAttribute("href");
-      if (targetId && targetId.startsWith("#")) {
-        e.preventDefault();
-        gsap.to(window, {
-          duration: 0.8,
-          scrollTo: targetId,
-          ease: "power2.out",
-        });
-      }
+    // Mobile menu toggle
+    mobileMenuToggle.addEventListener('click', () => {
+        mobileMenuToggle.classList.toggle('open');
+        const isNavVisible = mobileNav.style.display === 'flex';
+        mobileNav.style.display = isNavVisible ? 'none' : 'flex';
     });
-  });
-
-  // Background animado leve (opcional)
-  const shapes = document.querySelectorAll(".shape");
-  if (shapes.length) {
-    shapes.forEach((shape, i) => {
-      gsap.to(shape, {
-        x: `random(-50, 50)`,
-        y: `random(-50, 50)`,
-        duration: 10 + i * 2,
-        repeat: -1,
-        yoyo: true,
-        ease: "sine.inOut",
-      });
-    });
-  }
-
-  console.log("Landing Page inicializada com sucesso!");
 });
